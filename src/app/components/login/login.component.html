@@ -1,0 +1,8 @@
+<p>login works!</p>
+<p>{{authenticationToken}}</p>
+<form [formGroup]="loginForm" (ngSubmit)="handleLogInSubmit()">
+    Username: <input formControlName="username" type="text">
+    Password: <input formControlName="password" type="password">
+    <button type="submit">Log in</button> 
+    <p *ngIf="loginError">{{loginError}}</p>
+  </form> 
