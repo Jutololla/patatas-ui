@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { take } from 'rxjs';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
 import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
@@ -15,6 +16,7 @@ export class ListComponent implements OnInit {
 		private tokenStorageService: TokenStorageService,
 		private router: Router,
 		private route: ActivatedRoute,
+		private modalService: NgbModal
 	) {}
 	criteria = '';
 	page = 1;
@@ -23,6 +25,7 @@ export class ListComponent implements OnInit {
 	sortType = 0;
 	collectionSize = 0;
 	subscribers: any;
+	closeResult: string="";
 
 	ngOnInit(): void {
 		if (!!this.tokenStorageService.getToken()) {
@@ -47,6 +50,18 @@ export class ListComponent implements OnInit {
         }
       });
     }
+	deleteSubscritor(id:string){
+		this.subcribersService.deleteSubcriberById(id)
+		this.router.navigateByUrl('');
+	}
+	open(content: any, id: any) {  
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: string) => {  
+		  this.closeResult = `Closed with: ${result}`;  
+		  if (result === 'yes') {  
+			this.deleteSubscritor(id);  
+		  }  
+		});  
+	  }
 
 	goToUserDetails(id:string) {
 		this.router.navigate([ 'detail', id ]);

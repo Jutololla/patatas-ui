@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
 import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
@@ -12,11 +13,21 @@ import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage
 export class UserDetailsComponent implements OnInit {
 	id: string = '';
 	subscriberInfo: any;
+	form: FormGroup = new FormGroup({
+		name: new FormControl(''),
+		email: new FormControl(''),
+		countryCode: new FormControl(''),
+		phoneNumber: new FormControl(''),
+		Area: new FormControl(''),
+		jobTitle: new FormControl(false)
+	});
+	submitted = false;
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
 		private tokenStorageService: TokenStorageService,
-		private router: Router
+		private router: Router,
+		private formBuilder: FormBuilder
 	) {}
 	ngOnInit(): void {
 		if (!this.tokenStorageService.getToken()) {
@@ -36,5 +47,32 @@ export class UserDetailsComponent implements OnInit {
 			},
 			error: (err) => {}
 		});
+		const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } = this.subscriberInfo;
+		this.form = this.formBuilder.group({
+			name: [ Name, Validators.required ],
+			email: [ Email, [ Validators.required, Validators.email ] ],
+			countryCode: [ CountryCode, [ Validators.required ] ],
+			phoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
+			Area: [ Area, Validators.required ],
+			jobTitle: [ JobTitle, Validators.requiredTrue ]
+		});
+	}
+	get f(): { [key: string]: AbstractControl } {
+		return this.form.controls;
+	}
+
+	onSubmit(): void {
+		this.submitted = true;
+
+		if (this.form.invalid) {
+			return;
+		}
+
+		console.log(JSON.stringify(this.form.value, null, 2));
+	}
+
+	onReset(): void {
+		this.submitted = false;
+		this.form.reset();
 	}
 }

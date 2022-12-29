@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -10,6 +10,7 @@ import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage
 	styleUrls: [ './login.component.css' ]
 })
 export class LoginComponent implements OnInit {
+@Output() changeLogStatus:EventEmitter<boolean> =new EventEmitter<boolean>(); 
 	form = new FormGroup({
 		username: new FormControl('', [ Validators.required ]),
 		password: new FormControl('', [ Validators.required ])
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit {
 
 					this.isLoginFailed = false;
 					this.isLoggedIn = true;
+					this.changeLogStatus.emit(true);
 					this.router.navigateByUrl('/list');
 				
         }

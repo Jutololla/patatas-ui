@@ -15,7 +15,12 @@
 			<td>{{ subscriber.PhoneCodeAndNumber }}</td>
 			<td>{{ subscriber.Email}}</td>
 			<td>{{ subscriber.SubscriptionStateDescription }}</td>
-			<td><button (click)="goToUserDetails(subscriber.Id)">Detalles</button></td>
+			<td>
+				<button (click)="goToUserDetails(subscriber.Id)">Detalles</button>
+				<button (click)="open(content,subscriber.Id)"
+			>
+				Borrar
+			</button></td>
 		</tr>
 	</tbody>
 </table>
@@ -36,3 +41,19 @@
 	</select> -->
 </div></div>
 <div *ngIf="subscribers==null" class="no-content"><h1>No hay información para mostrar</h1></div>
+
+<ng-template #content let-c="close" let-d="dismiss">    
+	<div class="modal-header">    
+		<h4 class="modal-title" id="modal-basic-title">Confirmation</h4>    
+		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">    
+			<span aria-hidden="true">×</span>    
+		</button>    
+	</div>    
+	<div class="modal-body">    
+		<p>Are you sure to delete this?</p>    
+	</div>    
+	<div class="modal-footer">    
+		<button type="button" class="btn btn-outline-dark" (click)="d('Cross click')">Cancel</button>    
+		<button type="button" class="btn btn-outline-dark" (click)="c('yes')">Yes</button>    
+	</div>    
+</ng-template>     

@@ -19,4 +19,8 @@ export class SubscribersService {
 		const url:string=`${environment.subscribersBackEnd}subscribers/${id}`
 		return this.http.get(url)
 	}
+	deleteSubcriberById(id:string){
+		const url:string=`${environment.subscribersBackEnd}subscribers/${id}`
+		return this.http.delete(url)
+	}
 }

@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ListComponent } from './components/list/list.component';
@@ -22,7 +22,8 @@ const routes = [
 ];
 @NgModule({
 	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent ],
-	imports: [ BrowserModule, HttpClientModule, ReactiveFormsModule, RouterModule.forRoot(routes), NgbModule ],
+	imports: [ BrowserModule, HttpClientModule, ReactiveFormsModule,
+        FormsModule, RouterModule.forRoot(routes), NgbModule ],
 	providers: [ authInterceptorProviders ],
 	bootstrap: [ AppComponent ]
 })
