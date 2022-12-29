@@ -15,7 +15,7 @@
 			<td>{{ subscriber.PhoneCodeAndNumber }}</td>
 			<td>{{ subscriber.Email}}</td>
 			<td>{{ subscriber.SubscriptionStateDescription }}</td>
-			<td><button>Detalles</button></td>
+			<td><button (click)="goToUserDetails(subscriber.Id)">Detalles</button></td>
 		</tr>
 	</tbody>
 </table>

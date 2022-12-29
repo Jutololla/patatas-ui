@@ -22,8 +22,10 @@ export class UserDetailsComponent implements OnInit {
 		if (!this.tokenStorageService.getToken()) {
 			this.router.navigateByUrl('');
 		}
-		this.route.queryParams.subscribe((params) => {
-			this.id = params['id'];
+		this.route.params.subscribe((params) => {
+			if (params['id']) {
+				this.id = params['id'];
+			}
 		});
 		this.subcribersService.getSubscriberInfoById(this.id).pipe(take(1)).subscribe({
 			next: (data) => {
@@ -32,9 +34,7 @@ export class UserDetailsComponent implements OnInit {
 					this.subscriberInfo = content;
 				}
 			},
-			error: (err) => {
-				console.log(JSON.parse(err.error).message);
-			}
+			error: (err) => {}
 		});
 	}
 }

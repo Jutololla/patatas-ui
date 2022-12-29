@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
 import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
@@ -13,7 +13,8 @@ export class ListComponent implements OnInit {
 	constructor(
 		private subcribersService: SubscribersService,
 		private tokenStorageService: TokenStorageService,
-		private router: Router
+		private router: Router,
+		private route: ActivatedRoute,
 	) {}
 	criteria = '';
 	page = 1;
@@ -46,5 +47,9 @@ export class ListComponent implements OnInit {
         }
       });
     }
+
+	goToUserDetails(id:string) {
+		this.router.navigate([ 'detail', id ]);
+   }
   }
 
