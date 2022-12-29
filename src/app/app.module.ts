@@ -7,16 +7,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { ListComponent } from './components/list/list.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
-	declarations: [ AppComponent, LoginComponent ],
+	declarations: [ AppComponent, LoginComponent, ListComponent ],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
 		ReactiveFormsModule,
 		RouterModule.forRoot([ 
       { path: '', component: LoginComponent },
-      {path:'dashboard', component: DashboardComponent}
-    ])
+      {path:'dashboard', component: DashboardComponent},
+      {path: 'list', component: ListComponent}
+    ]),
+  NgbModule
 	],
 	providers: [],
 	bootstrap: [ AppComponent ]

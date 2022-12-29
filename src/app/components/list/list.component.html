@@ -1,0 +1,36 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">Nombre</th>
+			<th scope="col">Teléfono</th>
+			<th scope="col">Correo</th>
+			<th scope="col">Estado</th>
+			<th scope="col">Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let subscriber of subscribers">
+			<th scope="row">{{ subscriber.Name }}</th>
+			<td>{{ subscriber.PhoneCodeAndNumber }}</td>
+			<td>{{ subscriber.Email}}</td>
+			<td>{{ subscriber.SubscriptionStateDescription }}</td>
+			<td><button>Detalles</button></td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="d-flex justify-content-between p-2">
+	<ngb-pagination
+		[collectionSize]="collectionSize"
+		[(page)]="page"
+		[pageSize]="count"
+		(pageChange)="refreshTable()"
+	>
+	</ngb-pagination>
+
+<!-- 	<select class="form-select" style="width: auto" [(ngModel)]="count" (ngModelChange)="refreshTable()">
+		<option [ngValue]="10">10 items per page</option>
+		<option [ngValue]="20">20 items per page</option>
+		<option [ngValue]="30">30 items per page</option>
+	</select> -->
+</div>
