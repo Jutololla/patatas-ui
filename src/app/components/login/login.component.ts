@@ -1,34 +1,58 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { take } from 'rxjs';
-import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+	selector: 'app-login',
+	templateUrl: './login.component.html',
+	styleUrls: [ './login.component.css' ]
 })
 export class LoginComponent implements OnInit {
-  public loginError:string="";
+	form = new FormGroup({
+		username: new FormControl('', [ Validators.required ]),
+		password: new FormControl('', [ Validators.required ])
+	});
+	isLoggedIn = false;
+	isLoginFailed = false;
+	errorMessage = '';
 
-  constructor(private subcribersService: SubscribersService) { }
+	constructor(private authService: AuthService, private tokenStorage: TokenStorageService) {}
 
-  ngOnInit(): void {
+	ngOnInit(): void {
+		if (this.tokenStorage.getToken()) {
+			this.isLoggedIn = true;
+		}
+	}
+
+	onSubmit(): void {
+		const { username, password } = this.form.value;
+/* 		this.authService
+			.login(username, password) */
+			this.authService.login("patata","MrPotat0")
+			.subscribe({
+				next: (data) => {
+          if(data){
+					const { Token, ...userData } = data;
+					this.tokenStorage.saveToken(Token);
+					this.tokenStorage.saveUser(userData);
+
+					this.isLoginFailed = false;
+					this.isLoggedIn = true;
+				/* 	this.reloadPage(); */
+        }
+				},
+				error: (err) => {
+					this.errorMessage = err.error.message;
+					this.isLoginFailed = true;
+				}
+			});
+	}
+  setErrors(){
+    this.form.errors
   }
 
-  loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required])
-});
-
-  authenticationToken:string=""
-  handleLogInSubmit(){
-/*     const {username,password} = this.loginForm.value
-    if(this.loginForm.valid){
-      this.subcribersService.logIn(username,password)
-    }else{
-      this.loginError=" |||Ingrese sus datos "
-    } */
-    this.subcribersService.logIn("patata","MrPotat0")
-}
+/* 	reloadPage(): void {
+		window.location.reload();
+	} */
 }
