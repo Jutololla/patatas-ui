@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ListComponent } from './components/list/list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { authInterceptorProviders } from './helpers/interceptor/auth.interceptor';
 @NgModule({
 	declarations: [ AppComponent, LoginComponent, ListComponent ],
 	imports: [
@@ -22,7 +23,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ]),
   NgbModule
 	],
-	providers: [],
+	providers: [authInterceptorProviders],
 	bootstrap: [ AppComponent ]
 })
 export class AppModule {}
