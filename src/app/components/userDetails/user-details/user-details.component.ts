@@ -14,14 +14,15 @@ export class UserDetailsComponent implements OnInit {
 	id: string = '';
 	subscriberInfo: any;
 	form: FormGroup = new FormGroup({
-		name: new FormControl(''),
-		email: new FormControl(''),
-		countryCode: new FormControl(''),
-		phoneNumber: new FormControl(''),
-		Area: new FormControl(''),
-		jobTitle: new FormControl(false)
+		name: new FormControl("123"),
+		email: new FormControl(),
+		countryCode: new FormControl(),
+		phoneNumber: new FormControl(),
+		Area: new FormControl(),
+		jobTitle: new FormControl()
 	});
 	submitted = false;
+	canUserEdit:boolean=false
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
@@ -42,19 +43,19 @@ export class UserDetailsComponent implements OnInit {
 			next: (data) => {
 				const content: any = data;
 				if (!!content) {
+					const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } =content;
 					this.subscriberInfo = content;
+					this.form = this.formBuilder.group({
+						name: [ Name, Validators.required ],
+						email: [ Email, [ Validators.required, Validators.email ] ],
+						countryCode: [ CountryCode, [ Validators.required ] ],
+						phoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
+						area: [ Area, Validators.required ],
+						jobTitle: [ JobTitle, Validators.requiredTrue ]
+					});
 				}
 			},
 			error: (err) => {}
-		});
-		const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } = this.subscriberInfo;
-		this.form = this.formBuilder.group({
-			name: [ Name, Validators.required ],
-			email: [ Email, [ Validators.required, Validators.email ] ],
-			countryCode: [ CountryCode, [ Validators.required ] ],
-			phoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
-			Area: [ Area, Validators.required ],
-			jobTitle: [ JobTitle, Validators.requiredTrue ]
 		});
 	}
 	get f(): { [key: string]: AbstractControl } {

@@ -1,0 +1,72 @@
+<div class="register-form">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Name</label>
+        <input
+          type="text"
+          formControlName="fullname"
+          class="form-control"
+          [value]="form.value.name"
+        />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="text"
+          formControlName="email"
+          class="form-control"
+          [value]="form.value.email"
+        />
+      </div>  
+      <div class="form-group">
+        <label>Country Code</label>
+        <input
+          type="text"
+          formControlName="username"
+          class="form-control"
+          [value]="form.value.countryCode"
+        />
+      </div>  
+      <div class="form-group">
+        <label>Phone number</label>
+        <input
+          type="text"
+          formControlName="password"
+          [value]="form.value.phoneNumber"
+          class="form-control"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label>Area</label>
+        <input
+          type="text"
+          formControlName="confirmPassword"
+          [value]="form.value.area"
+          class="form-control"
+        />
+      </div>
+  
+      <div class="form-group">
+        <label>Job title</label>
+        <input
+          type="text"
+          formControlName="confirmPassword"
+          [value]="form.value.jobTitle"
+          class="form-control"
+        />
+      </div>
+      <hr>
+  
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Edit</button>
+        <button
+          type="button"
+          (click)="onReset()"
+          class="btn btn-warning float-right"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
