@@ -1,3 +1,4 @@
+<div *ngIf="subscribers!=null" >
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -33,4 +34,5 @@
 		<option [ngValue]="20">20 items per page</option>
 		<option [ngValue]="30">30 items per page</option>
 	</select> -->
-</div>
+</div></div>
+<div *ngIf="subscribers==null" class="no-content"><h1>No hay información para mostrar</h1></div>

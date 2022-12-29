@@ -1,0 +1,7 @@
+.body-container{
+    border-radius: 20px;
+    padding: 3%;
+    margin:3%;
+    border:2px solid gray;
+    min-height: 500px;
+}
