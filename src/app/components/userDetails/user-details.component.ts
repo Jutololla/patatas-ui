@@ -14,7 +14,7 @@ export class UserDetailsComponent implements OnInit {
 	id: string = '';
 	subscriberInfo: any;
 	form: FormGroup = new FormGroup({
-		name: new FormControl("123"),
+		name: new FormControl(),
 		email: new FormControl(),
 		countryCode: new FormControl(),
 		phoneNumber: new FormControl(),
@@ -62,26 +62,7 @@ export class UserDetailsComponent implements OnInit {
 		return this.form.controls;
 	}
 
-	onSubmit(): void {
-		this.submitted = true;
-		console.log(JSON.stringify(this.form.value, null, 2));
-
-		if (this.form.invalid) {
-			return;
-		}
-
-	}
-
 	return(){
 		this.router.navigateByUrl('/list')
-	}
-
-	toogleEdit():void{
-		this.canUserEdit=!this.canUserEdit
-	}
-
-	onReset(): void {
-		this.submitted = false;
-		this.form.reset();
 	}
 }

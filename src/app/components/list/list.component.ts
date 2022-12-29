@@ -46,7 +46,9 @@ export class ListComponent implements OnInit {
           this.collectionSize = content.Count;}
         },
         error: err => {
-          console.log(JSON.parse(err.error).message)
+			if(err.status==401){
+				this.router.navigateByUrl('')
+			}
         }
       });
     }

@@ -6,16 +6,14 @@ import { LoginComponent } from './components/login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ListComponent } from './components/list/list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { authInterceptorProviders } from './helpers/interceptor/auth.interceptor';
 import { NavigationBarComponent } from './components/navigationBar/navigation-bar.component';
-import { UserDetailsComponent } from './components/userDetails/user-details/user-details.component';
+import { UserDetailsComponent } from './components/userDetails/user-details.component';
 
 const routes = [
 	{ path: '', component: LoginComponent },
-	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'list', component: ListComponent },
 	{ path: 'detail/:id', component: UserDetailsComponent 	},
 	{ path: '**', component: LoginComponent }

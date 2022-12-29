@@ -30,9 +30,9 @@ export class LoginComponent implements OnInit {
 
 	onSubmit(): void {
 		const { username, password } = this.form.value;
-/* 		this.authService
-			.login(username, password) */
-			this.authService.login("patata","MrPotat0")
+		this.authService
+			.login(username, password)
+/* 			this.authService.login("patata","MrPotat0") */
 			.subscribe({
 				next: (data) => {
           if(data){
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 					this.isLoginFailed = false;
 					this.isLoggedIn = true;
 					this.changeLogStatus.emit(true);
-					this.router.navigateByUrl('/list');
+					this.reloadPage()
 				
         }
 				},
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
     this.form.errors
   }
 
-/* 	reloadPage(): void {
+	reloadPage(): void {
 		window.location.reload();
-	} */
+	}
 }
