@@ -15,4 +15,8 @@ export class SubscribersService {
 		const params = { criteria, page, count, sortOrder, sortType };
 		return this.http.get(url, { params });
 	}
+	getSubscriberInfoById(id:string){
+		const url:string=`${environment.subscribersBackEnd}subscribers/${id}`
+		return this.http.get(url)
+	}
 }

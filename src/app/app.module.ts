@@ -10,17 +10,21 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ListComponent } from './components/list/list.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { authInterceptorProviders } from './helpers/interceptor/auth.interceptor';
+import { NavigationBarComponent } from './components/navigationBar/navigation-bar.component';
+
+const routes = [ 
+	{ path: '', component: LoginComponent },
+	{path:'dashboard', component: DashboardComponent},
+	{path: 'list', component: ListComponent},
+	{ path: '**', component: LoginComponent }
+  ]
 @NgModule({
-	declarations: [ AppComponent, LoginComponent, ListComponent ],
+	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent ],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
 		ReactiveFormsModule,
-		RouterModule.forRoot([ 
-      { path: '', component: LoginComponent },
-      {path:'dashboard', component: DashboardComponent},
-      {path: 'list', component: ListComponent}
-    ]),
+		RouterModule.forRoot(routes),
   NgbModule
 	],
 	providers: [authInterceptorProviders],
