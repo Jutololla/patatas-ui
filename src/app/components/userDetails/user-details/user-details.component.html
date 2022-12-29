@@ -1,5 +1,6 @@
 <div class="register-form">
-    <form (ngSubmit)="onSubmit()">
+    <form>
+        <button (click)="return()">Regresar</button>
       <div class="form-group">
         <label>Name</label>
         <input
@@ -7,6 +8,7 @@
           formControlName="fullname"
           class="form-control"
           [value]="form.value.name"
+          disabled="canUserEdit"
         />
       </div>
       <div class="form-group">
@@ -15,6 +17,7 @@
           type="text"
           formControlName="email"
           class="form-control"
+          disabled="canUserEdit"
           [value]="form.value.email"
         />
       </div>  
@@ -24,6 +27,7 @@
           type="text"
           formControlName="username"
           class="form-control"
+          disabled="canUserEdit"
           [value]="form.value.countryCode"
         />
       </div>  
@@ -33,6 +37,7 @@
           type="text"
           formControlName="password"
           [value]="form.value.phoneNumber"
+          disabled="canUserEdit"
           class="form-control"
         />
       </div>
@@ -43,6 +48,7 @@
           type="text"
           formControlName="confirmPassword"
           [value]="form.value.area"
+          disabled="canUserEdit"
           class="form-control"
         />
       </div>
@@ -52,21 +58,29 @@
         <input
           type="text"
           formControlName="confirmPassword"
+          disabled="canUserEdit"
           [value]="form.value.jobTitle"
           class="form-control"
         />
       </div>
       <hr>
   
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary">Edit</button>
+<!--       <div class="form-group">
         <button
           type="button"
-          (click)="onReset()"
+          (click)="toogleEdit()"
+          class="btn btn-primary"
+        >
+          Editar
+        </button>
+        <button
+          type="button"
+          (click)="onSubmit()"
+          disabled="!canUserEdit"
           class="btn btn-warning float-right"
         >
-          Reset
+          Guardar
         </button>
-      </div>
+      </div> -->
     </form>
   </div>

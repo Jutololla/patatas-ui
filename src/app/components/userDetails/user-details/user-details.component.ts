@@ -64,12 +64,20 @@ export class UserDetailsComponent implements OnInit {
 
 	onSubmit(): void {
 		this.submitted = true;
+		console.log(JSON.stringify(this.form.value, null, 2));
 
 		if (this.form.invalid) {
 			return;
 		}
 
-		console.log(JSON.stringify(this.form.value, null, 2));
+	}
+
+	return(){
+		this.router.navigateByUrl('/list')
+	}
+
+	toogleEdit():void{
+		this.canUserEdit=!this.canUserEdit
 	}
 
 	onReset(): void {
