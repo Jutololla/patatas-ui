@@ -72,5 +72,8 @@ export class ListComponent implements OnInit {
 	goToUserDetails(id:string) {
 		this.router.navigate([ 'detail', id ]);
    }
+   goToCreateUser() {
+	this.router.navigateByUrl('create');
+}
   }
 

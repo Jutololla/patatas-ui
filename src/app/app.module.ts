@@ -11,15 +11,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { authInterceptorProviders } from './helpers/interceptor/auth.interceptor';
 import { NavigationBarComponent } from './components/navigationBar/navigation-bar.component';
 import { UserDetailsComponent } from './components/userDetails/user-details.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
 
 const routes = [
 	{ path: '', component: LoginComponent },
 	{ path: 'list', component: ListComponent },
+	{ path: 'create', component: CreateUserComponent },
 	{ path: 'detail/:id', component: UserDetailsComponent 	},
 	{ path: '**', component: LoginComponent }
 ];
 @NgModule({
-	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent, UserDetailsComponent ],
+	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent, UserDetailsComponent, CreateUserComponent ],
 	imports: [ BrowserModule, HttpClientModule, ReactiveFormsModule,
         FormsModule, RouterModule.forRoot(routes), NgbModule ],
 	providers: [ authInterceptorProviders ],

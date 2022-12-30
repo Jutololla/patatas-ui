@@ -37,6 +37,20 @@ export class SubscribersService {
 		const updateBody = body;
 		return this.http.put(url, updateBody);
 	}
+	createSubscriber(body: {
+		Id: string;
+		Name: string;
+		Email: string;
+		CountryCode: string;
+		PhoneNumber: string;
+		Area: string;
+		JobTitle: string;
+		Topics: any[];
+	}) {
+		const url: string = `${environment.subscribersBackEnd}subscribers/`;
+		const postBody = {Subscribers:[body]};
+		return this.http.post(url, postBody);
+	}
 	getListOfCountryCodes() {
 		const criteria = '';
 		const page = 1;

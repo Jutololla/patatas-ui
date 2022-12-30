@@ -1,0 +1,84 @@
+<div class="register-form">
+    <form [formGroup]="form">
+        <button (click)="return()">Regresar</button>
+      <div class="form-group">
+        <label>Name</label>
+        <input
+          type="text"
+          formControlName="Name"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['Name'].errors }"
+        />
+        <div *ngIf="submitted && f['Name'].errors" class="invalid-feedback">
+          <div *ngIf="f['Name'].errors['required']">Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="text"
+          formControlName="Email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['Email'].errors }"
+        />
+        <div *ngIf="submitted && f['Email'].errors" class="invalid-feedback">
+          <div *ngIf="f['Email'].errors['required']">Email is required</div>
+          <div *ngIf="f['Email'].errors['email']">Email is invalid</div>
+        </div>
+      </div>  
+      <div class="form-group">
+        <label>Country Code</label>
+        <select           
+        formControlName="CountryCode"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['CountryCode'].errors }">
+      <option *ngFor="let code of countryCodes" [value]="code.Code">{{code.Name}}</option>
+      </select>
+        <div *ngIf="submitted && f['CountryCode'].errors" class="invalid-feedback">
+          <div *ngIf="f['CountryCode'].errors['required']">Country Code is required</div>
+        </div>
+      </div>  
+      <div class="form-group">
+        <label>Phone number</label>
+        <input
+          type="text"
+          formControlName="PhoneNumber"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['PhoneNumber'].errors }"
+        />
+        <div *ngIf="submitted && f['PhoneNumber'].errors" class="invalid-feedback">
+          <div *ngIf="f['PhoneNumber'].errors['required']">Phone number is required</div>
+          <div *ngIf="f['PhoneNumber'].errors['pattern']">Phone number is invalid</div>
+
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Area</label>
+        <input
+          type="text"
+          formControlName="Area"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['Area'].errors }"
+        />
+        <div *ngIf="submitted && f['Area'].errors" class="invalid-feedback">
+          <div *ngIf="f['Area'].errors['required']">Area is required</div>
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Job title</label>
+        <input
+          type="text"
+          formControlName="JobTitle"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['JobTitle'].errors }"
+        />
+        <div *ngIf="submitted && f['JobTitle'].errors" class="invalid-feedback">
+          <div *ngIf="f['JobTitle'].errors['required']">Job title is required</div>
+        </div>
+      </div>
+      <hr>
+    </form>
+    <button (click)="saveData()">Guardar cambios</button>
+  </div>
