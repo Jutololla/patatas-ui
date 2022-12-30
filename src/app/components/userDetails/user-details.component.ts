@@ -14,15 +14,15 @@ export class UserDetailsComponent implements OnInit {
 	id: string = '';
 	subscriberInfo: any;
 	form: FormGroup = new FormGroup({
-		name: new FormControl(),
-		email: new FormControl(),
-		countryCode: new FormControl(),
-		phoneNumber: new FormControl(),
+		Name: new FormControl(),
+		Email: new FormControl(),
+		CountryCode: new FormControl(),
+		PhoneNumber: new FormControl(),
 		Area: new FormControl(),
-		jobTitle: new FormControl()
+		JobTitle: new FormControl()
 	});
 	submitted = false;
-	canUserEdit:boolean=false
+	canUserEdit: boolean = false;
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
@@ -43,15 +43,15 @@ export class UserDetailsComponent implements OnInit {
 			next: (data) => {
 				const content: any = data;
 				if (!!content) {
-					const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } =content;
+					const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } = content;
 					this.subscriberInfo = content;
 					this.form = this.formBuilder.group({
-						name: [ Name, Validators.required ],
-						email: [ Email, [ Validators.required, Validators.email ] ],
-						countryCode: [ CountryCode, [ Validators.required ] ],
-						phoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
-						area: [ Area, Validators.required ],
-						jobTitle: [ JobTitle, Validators.requiredTrue ]
+						Name: [ Name, Validators.required ],
+						Email: [ Email, [ Validators.required, Validators.email ] ],
+						CountryCode: [ CountryCode, [ Validators.required ] ],
+						PhoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
+						Area: [ Area, Validators.required ],
+						JobTitle: [ JobTitle, Validators.required ]
 					});
 				}
 			},
@@ -62,7 +62,24 @@ export class UserDetailsComponent implements OnInit {
 		return this.form.controls;
 	}
 
-	return(){
-		this.router.navigateByUrl('/list')
+	toggleFormDisable(): void {
+		this.form.disabled ? this.form.enable() : this.form.disable();
+	}
+
+	return() {
+		this.router.navigateByUrl('/list');
+	}
+
+	saveData() {
+		this.submitted=true
+		if (this.form.invalid) {
+			return;
+		}
+		const body = { ...this.form.value, Id: this.subscriberInfo.Id, Topics: this.subscriberInfo.Topics };
+		this.subcribersService.updateSubscriber(body).pipe(take(1)).subscribe({
+			next: () => {
+				window.location.reload();
+			}
+		});
 	}
 }

@@ -9,18 +9,32 @@ import { TokenStorageService } from '../tokenStorage/token-storage.service';
 	providedIn: 'root'
 })
 export class SubscribersService {
-	constructor(private http: HttpClient, private router: Router,private token: TokenStorageService) {}	
+	constructor(private http: HttpClient, private router: Router, private token: TokenStorageService) {}
 	getListOfSubscribers(criteria: string, page: number, count: number, sortOrder: string, sortType: number) {
 		const url: string = `${environment.subscribersBackEnd}subscribers/`;
 		const params = { criteria, page, count, sortOrder, sortType };
 		return this.http.get(url, { params });
 	}
-	getSubscriberInfoById(id:string){
-		const url:string=`${environment.subscribersBackEnd}subscribers/${id}`
-		return this.http.get(url)
+	getSubscriberInfoById(id: string) {
+		const url: string = `${environment.subscribersBackEnd}subscribers/${id}`;
+		return this.http.get(url);
 	}
-	deleteSubcriberById(id:string){
-		const url:string=`${environment.subscribersBackEnd}subscribers/${id}`
-		return this.http.delete(url)
+	deleteSubscriberById(id: string) {
+		const url: string = `${environment.subscribersBackEnd}subscribers/${id}`;
+		return this.http.delete(url);
+	}
+	updateSubscriber(body: {
+		Id: string;
+		Name: string;
+		Email: string;
+		CountryCode: string;
+		PhoneNumber: string;
+		Area: string;
+		JobTitle: string;
+		Topics: any[];
+	}) {
+		const url: string = `${environment.subscribersBackEnd}subscribers/${body.Id}`;
+		const updateBody = body;
+		return this.http.put(url, updateBody);
 	}
 }

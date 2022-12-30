@@ -53,7 +53,7 @@ export class ListComponent implements OnInit {
       });
     }
 	deleteSubscritor(id:string){
-		this.subcribersService.deleteSubcriberById(id).pipe(take(1))
+		this.subcribersService.deleteSubscriberById(id).pipe(take(1))
 		.subscribe({
 		  next: _data => {this.router.navigateByUrl(''); },
 		  error: _err => {}

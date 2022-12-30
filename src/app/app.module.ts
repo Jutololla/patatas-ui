@@ -19,7 +19,7 @@ const routes = [
 	{ path: '**', component: LoginComponent }
 ];
 @NgModule({
-	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent ],
+	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent, UserDetailsComponent ],
 	imports: [ BrowserModule, HttpClientModule, ReactiveFormsModule,
         FormsModule, RouterModule.forRoot(routes), NgbModule ],
 	providers: [ authInterceptorProviders ],
