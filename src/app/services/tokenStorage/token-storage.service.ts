@@ -2,38 +2,57 @@ import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
+const COUNTRY_CODES = 'country-codes'
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class TokenStorageService {
+	constructor() {}
 
-  constructor() { }
+	signOut(clear: boolean = false): void {
+		if (clear) {
+			window.sessionStorage.clear();
+			return;
+		}
+		window.sessionStorage.removeItem(TOKEN_KEY);
+		window.sessionStorage.removeItem(USER_KEY);
+	}
 
-  signOut(): void {
-    window.sessionStorage.clear();
-  }
+	public saveToken(token: string): void {
+		window.sessionStorage.removeItem(TOKEN_KEY);
+		window.sessionStorage.setItem(TOKEN_KEY, token);
+	}
 
-  public saveToken(token: string): void {
-    window.sessionStorage.removeItem(TOKEN_KEY);
-    window.sessionStorage.setItem(TOKEN_KEY, token);
-  }
+	public getToken(): string | null {
+		return window.sessionStorage.getItem(TOKEN_KEY);
+	}
 
-  public getToken(): string | null {
-    return window.sessionStorage.getItem(TOKEN_KEY);
-  }
+	public saveUser(user: any): void {
+		window.sessionStorage.removeItem(USER_KEY);
+		window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+	}
 
-  public saveUser(user: any): void {
-    window.sessionStorage.removeItem(USER_KEY);
-    window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
-  }
+	public getUser(): any {
+		const user = window.sessionStorage.getItem(USER_KEY);
+		if (user) {
+			return JSON.parse(user);
+		}
 
-  public getUser(): any {
-    const user = window.sessionStorage.getItem(USER_KEY);
-    if (user) {
-      return JSON.parse(user);
-    }
+		return {};
+	}
 
-    return {};
-  }
+  public saveCountryCodes(cc: any): void {
+		window.sessionStorage.removeItem(COUNTRY_CODES);
+		window.sessionStorage.setItem(COUNTRY_CODES, JSON.stringify(cc));
+	}
+
+	public getCountryCodes(): any {
+		const data = window.sessionStorage.getItem(COUNTRY_CODES);
+		if (data) {
+			return JSON.parse(data);
+		}
+
+		return null;
+	}
 }

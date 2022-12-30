@@ -23,6 +23,7 @@ export class UserDetailsComponent implements OnInit {
 	});
 	submitted = false;
 	canUserEdit: boolean = false;
+	countryCodes:any[]=[]
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
@@ -57,6 +58,7 @@ export class UserDetailsComponent implements OnInit {
 			},
 			error: (err) => {}
 		});
+		this.getCountryCodes()
 	}
 	get f(): { [key: string]: AbstractControl } {
 		return this.form.controls;
@@ -79,6 +81,20 @@ export class UserDetailsComponent implements OnInit {
 		this.subcribersService.updateSubscriber(body).pipe(take(1)).subscribe({
 			next: () => {
 				window.location.reload();
+			}
+		});
+	}
+
+	getCountryCodes(){
+		const countryCodes=this.tokenStorageService.getCountryCodes()
+		if(countryCodes){
+			this.countryCodes = countryCodes
+			return
+		}
+		this.subcribersService.getListOfCountryCodes().pipe(take(1)).subscribe({
+			next: (countryCodes:any) => {
+				this.countryCodes=countryCodes.Data
+				this.tokenStorageService.saveCountryCodes(countryCodes.Data)
 			}
 		});
 	}

@@ -37,4 +37,14 @@ export class SubscribersService {
 		const updateBody = body;
 		return this.http.put(url, updateBody);
 	}
+	getListOfCountryCodes() {
+		const criteria = '';
+		const page = 1;
+		const count = 300;
+		const sortOrder = 'Name';
+		const sortType = 0;		
+		const url: string = `${environment.subscribersBackEnd}countries/`;
+		const params = { criteria, page, count, sortOrder, sortType };
+		return this.http.get(url, { params });
+	}
 }

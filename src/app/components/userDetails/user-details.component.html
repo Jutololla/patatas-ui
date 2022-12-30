@@ -28,12 +28,12 @@
       </div>  
       <div class="form-group">
         <label>Country Code</label>
-        <input
-          type="text"
-          formControlName="CountryCode"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['CountryCode'].errors }"
-        />
+        <select           
+        formControlName="CountryCode"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f['CountryCode'].errors }">
+      <option *ngFor="let code of countryCodes" [value]="code.Code">{{code.Name}}</option>
+      </select>
         <div *ngIf="submitted && f['CountryCode'].errors" class="invalid-feedback">
           <div *ngIf="f['CountryCode'].errors['required']">Country Code is required</div>
         </div>
