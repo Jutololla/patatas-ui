@@ -14,11 +14,10 @@ import { UserDetailsComponent } from './components/userDetails/user-details.comp
 import { CreateUserComponent } from './components/create-user/create-user.component';
 
 const routes = [
-	{ path: '', component: LoginComponent },
-	{ path: 'list', component: ListComponent },
+	{ path: '', component: ListComponent },
 	{ path: 'create', component: CreateUserComponent },
 	{ path: 'detail/:id', component: UserDetailsComponent 	},
-	{ path: '**', component: LoginComponent }
+	{ path: '**', component: ListComponent }
 ];
 @NgModule({
 	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent, UserDetailsComponent, CreateUserComponent ],

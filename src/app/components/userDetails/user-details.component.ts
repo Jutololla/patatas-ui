@@ -40,7 +40,7 @@ export class UserDetailsComponent implements OnInit {
 				this.id = params['id'];
 			}
 		});
-		this.subcribersService.getSubscriberInfoById(this.id).pipe(take(1)).subscribe({
+		this.subcribersService.getTechnicianInfoById(this.id).pipe(take(1)).subscribe({
 			next: (data) => {
 				const content: any = data;
 				if (!!content) {
@@ -58,7 +58,6 @@ export class UserDetailsComponent implements OnInit {
 			},
 			error: (err) => {}
 		});
-		this.getCountryCodes()
 	}
 	get f(): { [key: string]: AbstractControl } {
 		return this.form.controls;
@@ -78,23 +77,9 @@ export class UserDetailsComponent implements OnInit {
 			return;
 		}
 		const body = { ...this.form.value, Id: this.subscriberInfo.Id, Topics: this.subscriberInfo.Topics };
-		this.subcribersService.updateSubscriber(body).pipe(take(1)).subscribe({
+		this.subcribersService.updateTechnician(body).pipe(take(1)).subscribe({
 			next: () => {
 				window.location.reload();
-			}
-		});
-	}
-
-	getCountryCodes(){
-		const countryCodes=this.tokenStorageService.getCountryCodes()
-		if(countryCodes){
-			this.countryCodes = countryCodes
-			return
-		}
-		this.subcribersService.getListOfCountryCodes().pipe(take(1)).subscribe({
-			next: (countryCodes:any) => {
-				this.countryCodes=countryCodes.Data
-				this.tokenStorageService.saveCountryCodes(countryCodes.Data)
 			}
 		});
 	}

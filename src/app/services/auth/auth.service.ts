@@ -14,7 +14,7 @@ export class AuthService {
 
 	login(username: string, password: string): Observable<any> {
 		return this.http.post(
-			environment.subscribersBackEnd + 'account/login',
+			environment.authUrl + 'account/login',
 			{
 				username,
 				password

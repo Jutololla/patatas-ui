@@ -1,64 +1,50 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { TokenStorageService } from '../tokenStorage/token-storage.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class SubscribersService {
-	constructor(private http: HttpClient, private router: Router, private token: TokenStorageService) {}
-	getListOfSubscribers(criteria: string, page: number, count: number, sortOrder: string, sortType: number) {
-		const url: string = `${environment.subscribersBackEnd}subscribers/`;
-		const params = { criteria, page, count, sortOrder, sortType };
-		return this.http.get(url, { params });
+	constructor(private http: HttpClient) {}
+	createTechnician(body: {
+		id: number;
+		full_name: string;
+		id_number: number;
+		phone_number: string;
+		email_address: string;
+		positon_name: string;
+		resources: string[];
+	}) {
+		const url: string = `${environment.techniciansUrl}/5OATTa/technician`;
+		const postBody = body;
+		return this.http.post(url, postBody);
 	}
-	getSubscriberInfoById(id: string) {
-		const url: string = `${environment.subscribersBackEnd}subscribers/${id}`;
+	getTechnitians(_page: number=1, _limit: number=10):Observable<any> {
+		const url: string = `${environment.techniciansUrl}/5OATTa/technician`;
+		const params = { _page, _limit};
+		return this.http.get(url, { params,observe: "response" });
+	}
+	getTechnicianInfoById(id: string) {
+		const url: string = `${environment.techniciansUrl}/5OATTa/technician/${id}`;
 		return this.http.get(url);
 	}
-	deleteSubscriberById(id: string) {
-		const url: string = `${environment.subscribersBackEnd}subscribers/${id}`;
-		return this.http.delete(url);
-	}
-	updateSubscriber(body: {
-		Id: string;
-		Name: string;
-		Email: string;
-		CountryCode: string;
-		PhoneNumber: string;
-		Area: string;
-		JobTitle: string;
-		Topics: any[];
+	updateTechnician(body: {
+		id: number;
+		full_name: string;
+		id_number: number;
+		phone_number: string;
+		email_address: string;
+		positon_name: string;
+		resources: string[];
 	}) {
-		const url: string = `${environment.subscribersBackEnd}subscribers/${body.Id}`;
+		const url: string = `${environment.techniciansUrl}/5OATTa/technician/${body.id}`;
 		const updateBody = body;
 		return this.http.put(url, updateBody);
 	}
-	createSubscriber(body: {
-		Id: string;
-		Name: string;
-		Email: string;
-		CountryCode: string;
-		PhoneNumber: string;
-		Area: string;
-		JobTitle: string;
-		Topics: any[];
-	}) {
-		const url: string = `${environment.subscribersBackEnd}subscribers/`;
-		const postBody = {Subscribers:[body]};
-		return this.http.post(url, postBody);
-	}
-	getListOfCountryCodes() {
-		const criteria = '';
-		const page = 1;
-		const count = 300;
-		const sortOrder = 'Name';
-		const sortType = 0;		
-		const url: string = `${environment.subscribersBackEnd}countries/`;
-		const params = { criteria, page, count, sortOrder, sortType };
-		return this.http.get(url, { params });
+	deleteTechnicianById(id: string) {
+		const url: string = `${environment.techniciansUrl}/5OATTa/technician/${id}`;
+		return this.http.delete(url);
 	}
 }

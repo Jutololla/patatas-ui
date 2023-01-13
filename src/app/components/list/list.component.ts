@@ -19,61 +19,62 @@ export class ListComponent implements OnInit {
 		private modalService: NgbModal
 	) {}
 	criteria = '';
-	page = 1;
-	count = 10;
-	sortOrder = 'Name';
+	_page = 1;
+	_limit = 10;
+	sortBy = 'Name';
 	sortType = 0;
 	collectionSize = 0;
-	subscribers: any;
-	closeResult: string="";
+	technicians: any;
+	closeResult: string = '';
+	isLoading: boolean = true;
 
 	ngOnInit(): void {
-		if (!!this.tokenStorageService.getToken()) {
-			this.refreshTable();
-		} else {
-			this.router.navigateByUrl('');
-		}
+		this.refreshTable();
 	}
 
 	refreshTable() {
-		this.subcribersService
-			.getListOfSubscribers(this.criteria, this.page, this.count, this.sortOrder, this.sortType)
-			.pipe(take(1))
-      .subscribe({
-        next: data => {
-          const content:any = data;
-          if(!!content){this.subscribers = content.Data;
-          this.collectionSize = content.Count;}
-        },
-        error: err => {
-			if(err.status==401){
-				this.router.navigateByUrl('')
+		this.isLoading = true;
+		this.subcribersService.getTechnitians(this._page, this._limit).pipe(take(1)).subscribe({
+			next: (response) => {
+				console.log(response);
+
+				const content: any = response;
+				if (!!content) {
+					this.technicians = content.body;
+					this.collectionSize = response.headers.get('x-total-count');
+				}
+			},
+			error: (err) => {
+				if (err.status == 401) {
+					this.router.navigateByUrl('');
+				}
+			},
+			complete: () => {
+				//this.isLoading = false;
 			}
-        }
-      });
-    }
-	deleteSubscritor(id:string){
-		this.subcribersService.deleteSubscriberById(id).pipe(take(1))
-		.subscribe({
-		  next: _data => {this.router.navigateByUrl(''); },
-		  error: _err => {}
-		})
-		
+		});
 	}
-	open(content: any, id: any) {  
-		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: string) => {  
-		  this.closeResult = `Closed with: ${result}`;  
-		  if (result === 'yes') {  
-			this.deleteSubscritor(id);  
-		  }  
-		});  
-	  }
+	deleteSubscritor(id: string) {
+		this.subcribersService.deleteTechnicianById(id).pipe(take(1)).subscribe({
+			next: (_data) => {
+				this.router.navigateByUrl('');
+			},
+			error: (_err) => {}
+		});
+	}
+	open(content: any, id: any) {
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: string) => {
+			this.closeResult = `Closed with: ${result}`;
+			if (result === 'yes') {
+				this.deleteSubscritor(id);
+			}
+		});
+	}
 
-	goToUserDetails(id:string) {
+	goToUserDetails(id: string) {
 		this.router.navigate([ 'detail', id ]);
-   }
-   goToCreateUser() {
-	this.router.navigateByUrl('create');
+	}
+	goToCreateUser() {
+		this.router.navigateByUrl('create');
+	}
 }
-  }
-

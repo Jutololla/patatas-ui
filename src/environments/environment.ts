@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  subscribersBackEnd: 'https://lab.app.invertebrado.co/api/'
+  techniciansUrl: 'https://retoolapi.dev/5OATTa/technician',
+  resourcesUrl: '123',
+  authUrl:'123'
 };
 
 /*
