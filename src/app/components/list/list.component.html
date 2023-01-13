@@ -4,6 +4,7 @@
 <table class="table table-striped">
 	<thead>
 		<tr>
+			<th scope="col">Id</th>
 			<th scope="col">Full name</th>
 			<th scope="col">Id number</th>
 			<th scope="col">Phone number</th>
@@ -15,15 +16,16 @@
 	</thead>
 	<tbody>
 		<tr *ngFor="let technician of technicians">
-			<th scope="row">{{ technician.full_name }}</th>
-			<td>{{ technician.id_number }}</td>
+			<th scope="row">{{ technician.id }}</th>
+			<td>{{ technician.full_name }}</td>
+			<td>{{ technician.id_number }}</td>	
 			<td>{{ technician.phone_number}}</td>
 			<td>{{ technician.email_address }}</td>
 			<td>{{ technician.position_name }}</td>
 			<td>{{ technician.resources }}</td>
 			<td>
-				<button (click)="goToUserDetails(technician.Id)">Detalles</button>
-				<button (click)="open(content,technician.Id)">Borrar</button>
+				<button (click)="goToUserDetails(technician.id)">Detalles</button>
+				<button (click)="open(content,technician.id)">Borrar</button>
 			</td>
 		</tr>
 	</tbody>
@@ -47,10 +49,9 @@
 </div>
 <div *ngIf="technicians==null" class="no-content"><h1>No hay información para mostrar</h1></div>
 
-<ng-template #content let-c="close" let-d="dismiss">    
-	<div class="modal-header">    
-		<h4 class="modal-title" id="modal-basic-title">Confirmation</h4>    
-		<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">    
+<ng-template #content let-c="close">    
+	<div class="modal-header"> 
+		<button type="button" class="close btn btn-light" aria-label="Close" (click)="c('exit')">    
 			<span aria-hidden="true">×</span>    
 		</button>    
 	</div>    
@@ -58,7 +59,7 @@
 		<p>Are you sure to delete this?</p>    
 	</div>    
 	<div class="modal-footer">    
-		<button type="button" class="btn btn-outline-dark" (click)="d('Cross click')">Cancel</button>    
-		<button type="button" class="btn btn-outline-dark" (click)="c('yes')">Yes</button>    
+		<button type="button" class="btn btn-secondary" (click)="c('no')">Cancel</button>    
+		<button type="button" class="btn btn-danger" (click)="c('yes')">Yes</button>    
 	</div>    
 </ng-template>     

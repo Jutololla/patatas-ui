@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Technician } from 'src/app/models';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -8,15 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SubscribersService {
 	constructor(private http: HttpClient) {}
-	createTechnician(body: {
-		id: number;
-		full_name: string;
-		id_number: number;
-		phone_number: string;
-		email_address: string;
-		positon_name: string;
-		resources: string[];
-	}) {
+	createTechnician(body: Technician) {
 		const url: string = `${environment.techniciansUrl}/5OATTa/technician`;
 		const postBody = body;
 		return this.http.post(url, postBody);
@@ -27,24 +20,16 @@ export class SubscribersService {
 		return this.http.get(url, { params,observe: "response" });
 	}
 	getTechnicianInfoById(id: string) {
-		const url: string = `${environment.techniciansUrl}/5OATTa/technician/${id}`;
+		const url: string = `${environment.techniciansUrl}/${id}`;
 		return this.http.get(url);
 	}
-	updateTechnician(body: {
-		id: number;
-		full_name: string;
-		id_number: number;
-		phone_number: string;
-		email_address: string;
-		positon_name: string;
-		resources: string[];
-	}) {
-		const url: string = `${environment.techniciansUrl}/5OATTa/technician/${body.id}`;
+	updateTechnician(id:string,body: Technician) {
+		const url: string = `${environment.techniciansUrl}/${id}`;
 		const updateBody = body;
 		return this.http.put(url, updateBody);
 	}
 	deleteTechnicianById(id: string) {
-		const url: string = `${environment.techniciansUrl}/5OATTa/technician/${id}`;
-		return this.http.delete(url);
+		const url: string = `${environment.techniciansUrl}/${id}`;
+		return this.http.delete(url,{ observe: "response" });
 	}
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
+import { Technician } from 'src/app/models';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
 import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
 
@@ -12,14 +13,13 @@ import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage
 })
 export class UserDetailsComponent implements OnInit {
 	id: string = '';
-	subscriberInfo: any;
+	technicianInfo: any;
 	form: FormGroup = new FormGroup({
-		Name: new FormControl(),
-		Email: new FormControl(),
-		CountryCode: new FormControl(),
-		PhoneNumber: new FormControl(),
-		Area: new FormControl(),
-		JobTitle: new FormControl()
+		full_name: new FormControl(),
+		phone_number: new FormControl(),
+		email_address: new FormControl(),
+		positon_name: new FormControl(),
+		resources: new FormControl()
 	});
 	submitted = false;
 	canUserEdit: boolean = false;
@@ -32,9 +32,6 @@ export class UserDetailsComponent implements OnInit {
 		private formBuilder: FormBuilder
 	) {}
 	ngOnInit(): void {
-		if (!this.tokenStorageService.getToken()) {
-			this.router.navigateByUrl('');
-		}
 		this.route.params.subscribe((params) => {
 			if (params['id']) {
 				this.id = params['id'];
@@ -44,15 +41,15 @@ export class UserDetailsComponent implements OnInit {
 			next: (data) => {
 				const content: any = data;
 				if (!!content) {
-					const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } = content;
-					this.subscriberInfo = content;
+					const { id, full_name, id_number, phone_number, email_address,
+						 position_name, resources } = content;
+					this.technicianInfo = content;
 					this.form = this.formBuilder.group({
-						Name: [ Name, Validators.required ],
-						Email: [ Email, [ Validators.required, Validators.email ] ],
-						CountryCode: [ CountryCode, [ Validators.required ] ],
-						PhoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
-						Area: [ Area, Validators.required ],
-						JobTitle: [ JobTitle, Validators.required ]
+						full_name: [ full_name, Validators.required ],
+						phone_number: [ phone_number, [ Validators.required, Validators.pattern('[- +()0-9]+[0-9]') ] ],
+						email_address: [ email_address, [ Validators.required, Validators.email ] ],
+						positon_name: [ position_name, Validators.required ],
+						resources: [ resources ]
 					});
 				}
 			},
@@ -65,6 +62,7 @@ export class UserDetailsComponent implements OnInit {
 
 	toggleFormDisable(): void {
 		this.form.disabled ? this.form.enable() : this.form.disable();
+		
 	}
 
 	return() {
@@ -76,8 +74,9 @@ export class UserDetailsComponent implements OnInit {
 		if (this.form.invalid) {
 			return;
 		}
-		const body = { ...this.form.value, Id: this.subscriberInfo.Id, Topics: this.subscriberInfo.Topics };
-		this.subcribersService.updateTechnician(body).pipe(take(1)).subscribe({
+
+		const body:Technician = {...this.form.value, id:this.id,id_number:this.technicianInfo.id_number}
+		this.subcribersService.updateTechnician(this.id, body).pipe(take(1)).subscribe({
 			next: () => {
 				window.location.reload();
 			}

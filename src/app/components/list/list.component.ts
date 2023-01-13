@@ -24,7 +24,7 @@ export class ListComponent implements OnInit {
 	sortBy = 'Name';
 	sortType = 0;
 	collectionSize = 0;
-	technicians: any;
+	technicians: any[] = [];
 	closeResult: string = '';
 	isLoading: boolean = true;
 
@@ -36,8 +36,6 @@ export class ListComponent implements OnInit {
 		this.isLoading = true;
 		this.subcribersService.getTechnitians(this._page, this._limit).pipe(take(1)).subscribe({
 			next: (response) => {
-				console.log(response);
-
 				const content: any = response;
 				if (!!content) {
 					this.technicians = content.body;
@@ -50,23 +48,32 @@ export class ListComponent implements OnInit {
 				}
 			},
 			complete: () => {
-				//this.isLoading = false;
+				this.isLoading = false;
 			}
 		});
 	}
 	deleteSubscritor(id: string) {
 		this.subcribersService.deleteTechnicianById(id).pipe(take(1)).subscribe({
-			next: (_data) => {
-				this.router.navigateByUrl('');
+			next: (response) => {
+				if (response.status == 200) {
+					const index = this.technicians.findIndex((item) => item.id === id);
+					if (index > -1) {
+						this.technicians.splice(index, 1);
+						//aqui se lanza una notificación de que se eliminó
+					}
+				}else{
+						//aqui se lanza una notificación de que no se pudo
+				}
 			},
 			error: (_err) => {}
 		});
 	}
 	open(content: any, id: any) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: string) => {
-			this.closeResult = `Closed with: ${result}`;
 			if (result === 'yes') {
+				this.isLoading=true
 				this.deleteSubscritor(id);
+				this.isLoading=false
 			}
 		});
 	}
