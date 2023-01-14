@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
-import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
 
 @Component({
 	selector: 'app-list',
@@ -14,10 +13,9 @@ import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage
 export class ListComponent implements OnInit {
 	constructor(
 		private subcribersService: SubscribersService,
-		private tokenStorageService: TokenStorageService,
 		private router: Router,
-		private route: ActivatedRoute,
-		private modalService: NgbModal,private notification: NzNotificationService
+		private modalService: NgbModal,
+		private notification: NzNotificationService
 	) {}
 	criteria = '';
 	_page = 1;
@@ -59,13 +57,17 @@ export class ListComponent implements OnInit {
 				if (response.status == 200) {
 					const index = this.technicians.findIndex((item) => item.id === id);
 					if (index > -1) {
-						this.technicians.splice(index, 1);
-						this.notification.success('Success', `The technician ${this.technicians[index].full_name} with id ${id} was deleted`, {
-							nzDuration: 0,
-							nzPlacement: 'topRight'
-						});
+						this.notification.success(
+							'Success',
+							`The technician ${this.technicians[index].full_name} with id ${id} was deleted`,
+							{
+								nzDuration: 0,
+								nzPlacement: 'topRight'
+							}
+							);
+							this.technicians.splice(index, 1);	
 					}
-				}else{
+				} else {
 					this.notification.error('Error', `There was an unexpected error. Please try again`, {
 						nzDuration: 0,
 						nzPlacement: 'topRight'
@@ -78,9 +80,9 @@ export class ListComponent implements OnInit {
 	open(content: any, id: any) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: string) => {
 			if (result === 'yes') {
-				this.isLoading=true
+				this.isLoading = true;
 				this.deleteSubscritor(id);
-				this.isLoading=false
+				this.isLoading = false;
 			}
 		});
 	}

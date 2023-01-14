@@ -1,3 +1,6 @@
+<div class="screen-cover" role="status" *ngIf="isLoading">
+	<div class="spinner-grow text-primary"></div>
+  </div>
 <div class="register-form">
     <form [formGroup]="form">
         <button (click)="return()" class="btn btn-secondary">Regresar</button>

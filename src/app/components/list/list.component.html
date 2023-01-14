@@ -1,6 +1,9 @@
 
+<div class="screen-cover" role="status" *ngIf="isLoading">
+	<div class="spinner-grow text-primary"></div>
+  </div>
 <div *ngIf="technicians!=null" >
-	<button (click)="goToCreateUser()" class="btn btn-primary">Crear subscriptor</button>
+	<button (click)="goToCreateUser()" class="btn btn-primary">Create technician</button>
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -22,8 +25,8 @@
 			<td>{{ technician.email_address }}</td>
 			<td>{{ technician.position_name }}</td>
 			<td>
-				<button (click)="goToUserDetails(technician.id)" class="btn btn-secondary">Detalles</button>
-				<button (click)="open(content,technician.id)" class="btn btn-danger">Borrar</button>
+				<button (click)="goToUserDetails(technician.id)" class="btn btn-secondary">Edit</button>
+				<button (click)="open(content,technician.id)" class="btn btn-danger">Delete</button>
 			</td>
 		</tr>
 	</tbody>
@@ -45,7 +48,7 @@
 	</select>
 </div>
 </div>
-<div *ngIf="technicians==null" class="no-content"><h1>No hay información para mostrar</h1></div>
+<div *ngIf="technicians==null" class="no-content"><h1>There's no info to show</h1></div>
 
 <ng-template #content let-c="close">    
 	<div class="modal-header"> 

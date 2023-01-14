@@ -21,3 +21,17 @@
 .btn-secondary{
     margin-right: 3px;
 }
+.screen-cover{
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1050;
+        opacity:.5;
+        background-color: rgba(128, 196, 181, 0.404);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+}

@@ -22,8 +22,7 @@ export class UserDetailsComponent implements OnInit {
 		position_name: new FormControl(),
 	});
 	submitted = false;
-	canUserEdit: boolean = false;
-	countryCodes:any[]=[]
+	isLoading: boolean = true;
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
@@ -52,7 +51,11 @@ export class UserDetailsComponent implements OnInit {
 					});
 				}
 			},
-			error: (err) => {}
+			error: (err) => {},
+			complete: () => {
+				this.isLoading = false;
+			}
+
 		});
 	}
 	get f(): { [key: string]: AbstractControl } {
@@ -75,12 +78,14 @@ export class UserDetailsComponent implements OnInit {
 		}
 
 		const body:Technician = {...this.form.value, id:this.id,id_number:this.technicianInfo.id_number}
+		this.isLoading = true;
 		this.subcribersService.updateTechnician(this.id, body).pipe(take(1)).subscribe({
 			next: () => {
 				this.notification.success('Success', `The technician information was updated`, {
 					nzDuration: 0,
 					nzPlacement: 'topRight'
 				});
+				this.form.markAsPristine()
 				this.submitted = false;
 			},
 			error:()=>{
@@ -88,6 +93,9 @@ export class UserDetailsComponent implements OnInit {
 						nzDuration: 0,
 						nzPlacement: 'topRight'
 					});
+			},
+			complete: () => {
+				this.isLoading = false;
 			}
 		});
 	}

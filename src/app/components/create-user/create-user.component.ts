@@ -22,7 +22,8 @@ export class CreateUserComponent implements OnInit {
 		email_address: new FormControl(),
 		position_name: new FormControl()
 	});
-	submitted = false;
+	submitted:boolean = false;
+	isLoading:boolean=false
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
@@ -54,6 +55,7 @@ export class CreateUserComponent implements OnInit {
 			return;
 		}
 		const body = { ...this.form.value };
+		this.isLoading=true
 		this.subcribersService.createTechnician(body).pipe(take(1)).subscribe({
 			next: (response: any) => {
 				this.notification.success('Success', `The technician was created with the id ${response.id}`, {
@@ -68,6 +70,9 @@ export class CreateUserComponent implements OnInit {
 					nzDuration: 0,
 					nzPlacement: 'topRight'
 				});
+			},
+			complete:()=>{
+				this.isLoading=false
 			}
 		});
 	}
