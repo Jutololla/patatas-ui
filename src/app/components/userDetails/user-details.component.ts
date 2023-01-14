@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
 import { Technician } from 'src/app/models';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
@@ -28,7 +29,7 @@ export class UserDetailsComponent implements OnInit {
 		private subcribersService: SubscribersService,
 		private tokenStorageService: TokenStorageService,
 		private router: Router,
-		private formBuilder: FormBuilder
+		private formBuilder: FormBuilder,		private notification: NzNotificationService
 	) {}
 	ngOnInit(): void {
 		this.route.params.subscribe((params) => {
@@ -76,7 +77,17 @@ export class UserDetailsComponent implements OnInit {
 		const body:Technician = {...this.form.value, id:this.id,id_number:this.technicianInfo.id_number}
 		this.subcribersService.updateTechnician(this.id, body).pipe(take(1)).subscribe({
 			next: () => {
-				/* window.location.reload(); */
+				this.notification.success('Success', `The technician information was updated`, {
+					nzDuration: 0,
+					nzPlacement: 'topRight'
+				});
+				this.submitted = false;
+			},
+			error:()=>{
+					this.notification.error('Error', `There was an unexpected error. Please try again`, {
+						nzDuration: 0,
+						nzPlacement: 'topRight'
+					});
 			}
 		});
 	}

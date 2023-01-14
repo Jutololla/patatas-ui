@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
 import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
 import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
@@ -16,7 +17,7 @@ export class ListComponent implements OnInit {
 		private tokenStorageService: TokenStorageService,
 		private router: Router,
 		private route: ActivatedRoute,
-		private modalService: NgbModal
+		private modalService: NgbModal,private notification: NzNotificationService
 	) {}
 	criteria = '';
 	_page = 1;
@@ -59,10 +60,16 @@ export class ListComponent implements OnInit {
 					const index = this.technicians.findIndex((item) => item.id === id);
 					if (index > -1) {
 						this.technicians.splice(index, 1);
-						//aqui se lanza una notificación de que se eliminó
+						this.notification.success('Success', `The technician ${this.technicians[index].full_name} with id ${id} was deleted`, {
+							nzDuration: 0,
+							nzPlacement: 'topRight'
+						});
 					}
 				}else{
-						//aqui se lanza una notificación de que no se pudo
+					this.notification.error('Error', `There was an unexpected error. Please try again`, {
+						nzDuration: 0,
+						nzPlacement: 'topRight'
+					});
 				}
 			},
 			error: (_err) => {}

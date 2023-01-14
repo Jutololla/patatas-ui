@@ -12,6 +12,14 @@ import { authInterceptorProviders } from './helpers/interceptor/auth.interceptor
 import { NavigationBarComponent } from './components/navigationBar/navigation-bar.component';
 import { UserDetailsComponent } from './components/userDetails/user-details.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+
+registerLocaleData(en);
 
 const routes = [
 	{ path: '', component: ListComponent },
@@ -22,8 +30,8 @@ const routes = [
 @NgModule({
 	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent, UserDetailsComponent, CreateUserComponent ],
 	imports: [ BrowserModule, HttpClientModule, ReactiveFormsModule,
-        FormsModule, RouterModule.forRoot(routes), NgbModule ],
-	providers: [ authInterceptorProviders ],
+        FormsModule, RouterModule.forRoot(routes), NgbModule, BrowserAnimationsModule,NzNotificationModule ],
+	providers: [ authInterceptorProviders, { provide: NZ_I18N, useValue: en_US } ],
 	bootstrap: [ AppComponent ]
 })
 export class AppModule {}
