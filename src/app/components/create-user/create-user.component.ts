@@ -1,49 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
-import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
-import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
+import { TechniciansService } from 'src/app/services/technicians/technicians.service';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css']
+	selector: 'app-create-user',
+	templateUrl: './create-user.component.html',
+	styleUrls: [ './create-user.component.css' ]
 })
 export class CreateUserComponent implements OnInit {
-  id: string = '';
+	id: string = '';
 	subscriberInfo: any;
 	form: FormGroup = new FormGroup({
-		Name: new FormControl(),
-		Email: new FormControl(),
-		CountryCode: new FormControl(),
-		PhoneNumber: new FormControl(),
-		Area: new FormControl(),
-		JobTitle: new FormControl()
+		full_name: new FormControl(),
+		id_number: new FormControl(),
+		phone_number: new FormControl(),
+		email_address: new FormControl(),
+		position_name: new FormControl()
 	});
-	submitted = false;
-	canUserEdit: boolean = false;
-	countryCodes:any[]=[]
+	submitted:boolean = false;
+	isLoading:boolean=false
 	constructor(
-		private route: ActivatedRoute,
-		private subcribersService: SubscribersService,
-		private tokenStorageService: TokenStorageService,
+		private techniciansService: TechniciansService,
 		private router: Router,
-		private formBuilder: FormBuilder
+		private formBuilder: FormBuilder,
+		private notification: NzNotificationService
 	) {}
 	ngOnInit(): void {
-		if (!this.tokenStorageService.getToken()) {
-			this.router.navigateByUrl('');
-		}
-					this.form = this.formBuilder.group({
-						Name: [ '', Validators.required ],
-						Email: [ '', [ Validators.required, Validators.email ] ],
-						CountryCode: [ '', [ Validators.required ] ],
-						PhoneNumber: [ '', [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
-						Area: [ '', Validators.required ],
-						JobTitle: [ '', Validators.required ]
-					});
-		this.getCountryCodes()
+		this.form = this.formBuilder.group({
+			full_name: [ '', Validators.required ],
+			id_number: [ '', [ Validators.required, Validators.pattern('^[0-9]*$') ] ],
+			phone_number: [ '', [ Validators.required, Validators.pattern('[- +()0-9]+[0-9]') ] ],
+			email_address: [ '', [ Validators.required, Validators.email ] ],
+			position_name: [ '', Validators.required ]
+		});
 	}
 	get f(): { [key: string]: AbstractControl } {
 		return this.form.controls;
@@ -54,31 +46,30 @@ export class CreateUserComponent implements OnInit {
 	}
 
 	saveData() {
-		this.submitted=true
+		this.submitted = true;
 		if (this.form.invalid) {
 			return;
 		}
-		const body = { ...this.form.value, Topics: [] };
-		this.subcribersService.createSubscriber(body).pipe(take(1)).subscribe({
-			next: () => {
-				this.return()
+		const body = { ...this.form.value };
+		this.isLoading=true
+		this.techniciansService.createTechnician(body).pipe(take(1)).subscribe({
+			next: (response: any) => {
+				this.notification.success('Success', `The technician was created with the id ${response.id}`, {
+					nzDuration: 0,
+					nzPlacement: 'topRight'
+				});
+				this.form.reset();
+				this.submitted = false;
+			},
+			error: ()=>{
+				this.notification.error('Error', `There was an unexpected error. Please try again`, {
+					nzDuration: 0,
+					nzPlacement: 'topRight'
+				});
+			},
+			complete:()=>{
+				this.isLoading=false
 			}
 		});
 	}
-
-	getCountryCodes(){
-		const countryCodes=this.tokenStorageService.getCountryCodes()
-		if(countryCodes){
-			this.countryCodes = countryCodes
-			return
-		}
-		this.subcribersService.getListOfCountryCodes().pipe(take(1)).subscribe({
-			next: (countryCodes:any) => {
-				this.countryCodes=countryCodes.Data
-				this.tokenStorageService.saveCountryCodes(countryCodes.Data)
-			}
-		});
-	}
-
-
 }

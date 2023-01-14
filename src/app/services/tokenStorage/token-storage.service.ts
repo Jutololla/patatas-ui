@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
-const COUNTRY_CODES = 'country-codes'
+const COUNTRY_CODES = 'country-codes';
 
 @Injectable({
 	providedIn: 'root'
@@ -42,7 +42,7 @@ export class TokenStorageService {
 		return {};
 	}
 
-  public saveCountryCodes(cc: any): void {
+	public saveCountryCodes(cc: any): void {
 		window.sessionStorage.removeItem(COUNTRY_CODES);
 		window.sessionStorage.setItem(COUNTRY_CODES, JSON.stringify(cc));
 	}

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
-import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
-import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
+import { Technician } from 'src/app/models';
+import { TechniciansService } from 'src/app/services/technicians/technicians.service';
 
 @Component({
 	selector: 'app-user-details',
@@ -12,89 +13,82 @@ import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage
 })
 export class UserDetailsComponent implements OnInit {
 	id: string = '';
-	subscriberInfo: any;
+	technicianInfo: any;
 	form: FormGroup = new FormGroup({
-		Name: new FormControl(),
-		Email: new FormControl(),
-		CountryCode: new FormControl(),
-		PhoneNumber: new FormControl(),
-		Area: new FormControl(),
-		JobTitle: new FormControl()
+		full_name: new FormControl(),
+		phone_number: new FormControl(),
+		email_address: new FormControl(),
+		position_name: new FormControl()
 	});
 	submitted = false;
-	canUserEdit: boolean = false;
-	countryCodes:any[]=[]
+	isLoading: boolean = true;
 	constructor(
 		private route: ActivatedRoute,
-		private subcribersService: SubscribersService,
-		private tokenStorageService: TokenStorageService,
-		private router: Router,
-		private formBuilder: FormBuilder
+		private techniciansService: TechniciansService,
+		private formBuilder: FormBuilder,
+		private notification: NzNotificationService,
+		private router: Router
 	) {}
 	ngOnInit(): void {
-		if (!this.tokenStorageService.getToken()) {
-			this.router.navigateByUrl('');
-		}
 		this.route.params.subscribe((params) => {
 			if (params['id']) {
 				this.id = params['id'];
 			}
 		});
-		this.subcribersService.getSubscriberInfoById(this.id).pipe(take(1)).subscribe({
+		this.techniciansService.getTechnicianInfoById(this.id).pipe(take(1)).subscribe({
 			next: (data) => {
 				const content: any = data;
 				if (!!content) {
-					const { Name, Email, CountryCode, PhoneNumber, Area, JobTitle } = content;
-					this.subscriberInfo = content;
+					const { full_name, phone_number, email_address, position_name } = content;
+					this.technicianInfo = content;
 					this.form = this.formBuilder.group({
-						Name: [ Name, Validators.required ],
-						Email: [ Email, [ Validators.required, Validators.email ] ],
-						CountryCode: [ CountryCode, [ Validators.required ] ],
-						PhoneNumber: [ PhoneNumber, [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
-						Area: [ Area, Validators.required ],
-						JobTitle: [ JobTitle, Validators.required ]
+						full_name: [ full_name, Validators.required ],
+						phone_number: [ phone_number, [ Validators.required, Validators.pattern('[- +()0-9]+[0-9]') ] ],
+						email_address: [ email_address, [ Validators.required, Validators.email ] ],
+						position_name: [ position_name, Validators.required ]
 					});
 				}
 			},
-			error: (err) => {}
+			error: () => {},
+			complete: () => {
+				this.isLoading = false;
+			}
 		});
-		this.getCountryCodes()
 	}
 	get f(): { [key: string]: AbstractControl } {
 		return this.form.controls;
 	}
 
-	toggleFormDisable(): void {
-		this.form.disabled ? this.form.enable() : this.form.disable();
-	}
 
 	return() {
 		this.router.navigateByUrl('/list');
 	}
 
 	saveData() {
-		this.submitted=true
+		this.submitted = true;
 		if (this.form.invalid) {
 			return;
 		}
-		const body = { ...this.form.value, Id: this.subscriberInfo.Id, Topics: this.subscriberInfo.Topics };
-		this.subcribersService.updateSubscriber(body).pipe(take(1)).subscribe({
-			next: () => {
-				window.location.reload();
-			}
-		});
-	}
 
-	getCountryCodes(){
-		const countryCodes=this.tokenStorageService.getCountryCodes()
-		if(countryCodes){
-			this.countryCodes = countryCodes
-			return
-		}
-		this.subcribersService.getListOfCountryCodes().pipe(take(1)).subscribe({
-			next: (countryCodes:any) => {
-				this.countryCodes=countryCodes.Data
-				this.tokenStorageService.saveCountryCodes(countryCodes.Data)
+		const body: Technician = { ...this.form.value, id: this.id, id_number: this.technicianInfo.id_number };
+		this.isLoading = true;
+		this.techniciansService.updateTechnician(this.id, body).pipe(take(1)).subscribe({
+			next: () => {
+				this.notification.success('Success', `The technician information was updated`, {
+					nzDuration: 0,
+					nzPlacement: 'topRight'
+				});
+				this.form.markAsPristine();
+				this.submitted = false;
+			},
+			error: () => {
+				this.notification.error('Error', `There was an unexpected error. Please try again`, {
+					nzDuration: 0,
+					nzPlacement: 'topRight'
+				});
+			},
+			complete: () => {
+				this.isLoading = false;
 			}
 		});
 	}
