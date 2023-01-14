@@ -18,8 +18,7 @@ export class UserDetailsComponent implements OnInit {
 		full_name: new FormControl(),
 		phone_number: new FormControl(),
 		email_address: new FormControl(),
-		positon_name: new FormControl(),
-		resources: new FormControl()
+		position_name: new FormControl(),
 	});
 	submitted = false;
 	canUserEdit: boolean = false;
@@ -42,14 +41,13 @@ export class UserDetailsComponent implements OnInit {
 				const content: any = data;
 				if (!!content) {
 					const { id, full_name, id_number, phone_number, email_address,
-						 position_name, resources } = content;
+						position_name, resources } = content;
 					this.technicianInfo = content;
 					this.form = this.formBuilder.group({
 						full_name: [ full_name, Validators.required ],
 						phone_number: [ phone_number, [ Validators.required, Validators.pattern('[- +()0-9]+[0-9]') ] ],
 						email_address: [ email_address, [ Validators.required, Validators.email ] ],
-						positon_name: [ position_name, Validators.required ],
-						resources: [ resources ]
+						position_name: [ position_name, Validators.required ],
 					});
 				}
 			},
@@ -78,7 +76,7 @@ export class UserDetailsComponent implements OnInit {
 		const body:Technician = {...this.form.value, id:this.id,id_number:this.technicianInfo.id_number}
 		this.subcribersService.updateTechnician(this.id, body).pipe(take(1)).subscribe({
 			next: () => {
-				window.location.reload();
+				/* window.location.reload(); */
 			}
 		});
 	}
