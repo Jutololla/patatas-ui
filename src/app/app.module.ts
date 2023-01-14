@@ -18,6 +18,7 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 registerLocaleData(en);
 
@@ -30,7 +31,7 @@ const routes = [
 @NgModule({
 	declarations: [ AppComponent, LoginComponent, ListComponent, NavigationBarComponent, UserDetailsComponent, CreateUserComponent ],
 	imports: [ BrowserModule, HttpClientModule, ReactiveFormsModule,
-        FormsModule, RouterModule.forRoot(routes), NgbModule, BrowserAnimationsModule,NzNotificationModule ],
+        FormsModule, RouterModule.forRoot(routes), NgbModule, BrowserAnimationsModule,NzNotificationModule,NzSelectModule ],
 	providers: [ authInterceptorProviders, { provide: NZ_I18N, useValue: en_US } ],
 	bootstrap: [ AppComponent ]
 })

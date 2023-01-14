@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
-import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
+import { TechniciansService } from 'src/app/services/technicians/technicians.service';
 
 @Component({
 	selector: 'app-list',
@@ -12,16 +12,14 @@ import { SubscribersService } from 'src/app/services/subscribers/subscribers.ser
 })
 export class ListComponent implements OnInit {
 	constructor(
-		private subcribersService: SubscribersService,
+		private techniciansService: TechniciansService,
 		private router: Router,
 		private modalService: NgbModal,
 		private notification: NzNotificationService
 	) {}
-	criteria = '';
+
 	_page = 1;
 	_limit = 10;
-	sortBy = 'Name';
-	sortType = 0;
 	collectionSize = 0;
 	technicians: any[] = [];
 	closeResult: string = '';
@@ -33,7 +31,7 @@ export class ListComponent implements OnInit {
 
 	refreshTable() {
 		this.isLoading = true;
-		this.subcribersService.getTechnitians(this._page, this._limit).pipe(take(1)).subscribe({
+		this.techniciansService.getTechnitians(this._page, this._limit).pipe(take(1)).subscribe({
 			next: (response) => {
 				const content: any = response;
 				if (!!content) {
@@ -51,8 +49,8 @@ export class ListComponent implements OnInit {
 			}
 		});
 	}
-	deleteSubscritor(id: string) {
-		this.subcribersService.deleteTechnicianById(id).pipe(take(1)).subscribe({
+	deleteTechnician(id: string) {
+		this.techniciansService.deleteTechnicianById(id).pipe(take(1)).subscribe({
 			next: (response) => {
 				if (response.status == 200) {
 					const index = this.technicians.findIndex((item) => item.id === id);
@@ -81,7 +79,7 @@ export class ListComponent implements OnInit {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: string) => {
 			if (result === 'yes') {
 				this.isLoading = true;
-				this.deleteSubscritor(id);
+				this.deleteTechnician(id);
 				this.isLoading = false;
 			}
 		});

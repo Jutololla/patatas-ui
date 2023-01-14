@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
 	providedIn: 'root'
 })
-export class SubscribersService {
+export class TechniciansService {
 	constructor(private http: HttpClient) {}
 	createTechnician(body: Technician) {
 		const url: string = environment.techniciansUrl;

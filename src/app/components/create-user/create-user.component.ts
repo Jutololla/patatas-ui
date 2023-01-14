@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { take } from 'rxjs';
-import { Technician } from 'src/app/models';
-import { SubscribersService } from 'src/app/services/subscribers/subscribers.service';
-import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
+import { TechniciansService } from 'src/app/services/technicians/technicians.service';
 
 @Component({
 	selector: 'app-create-user',
@@ -25,9 +23,7 @@ export class CreateUserComponent implements OnInit {
 	submitted:boolean = false;
 	isLoading:boolean=false
 	constructor(
-		private route: ActivatedRoute,
-		private subcribersService: SubscribersService,
-		private tokenStorageService: TokenStorageService,
+		private techniciansService: TechniciansService,
 		private router: Router,
 		private formBuilder: FormBuilder,
 		private notification: NzNotificationService
@@ -56,7 +52,7 @@ export class CreateUserComponent implements OnInit {
 		}
 		const body = { ...this.form.value };
 		this.isLoading=true
-		this.subcribersService.createTechnician(body).pipe(take(1)).subscribe({
+		this.techniciansService.createTechnician(body).pipe(take(1)).subscribe({
 			next: (response: any) => {
 				this.notification.success('Success', `The technician was created with the id ${response.id}`, {
 					nzDuration: 0,
