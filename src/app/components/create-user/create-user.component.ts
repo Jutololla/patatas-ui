@@ -6,24 +6,21 @@ import { SubscribersService } from 'src/app/services/subscribers/subscribers.ser
 import { TokenStorageService } from 'src/app/services/tokenStorage/token-storage.service';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css']
+	selector: 'app-create-user',
+	templateUrl: './create-user.component.html',
+	styleUrls: [ './create-user.component.css' ]
 })
 export class CreateUserComponent implements OnInit {
-  id: string = '';
+	id: string = '';
 	subscriberInfo: any;
 	form: FormGroup = new FormGroup({
-		Name: new FormControl(),
-		Email: new FormControl(),
-		CountryCode: new FormControl(),
-		PhoneNumber: new FormControl(),
-		Area: new FormControl(),
-		JobTitle: new FormControl()
+		full_name: new FormControl(),
+		id_number: new FormControl(),
+		phone_number: new FormControl(),
+		email_address: new FormControl(),
+		position_name: new FormControl()
 	});
 	submitted = false;
-	canUserEdit: boolean = false;
-	countryCodes:any[]=[]
 	constructor(
 		private route: ActivatedRoute,
 		private subcribersService: SubscribersService,
@@ -32,17 +29,13 @@ export class CreateUserComponent implements OnInit {
 		private formBuilder: FormBuilder
 	) {}
 	ngOnInit(): void {
-		if (!this.tokenStorageService.getToken()) {
-			this.router.navigateByUrl('');
-		}
-					this.form = this.formBuilder.group({
-						Name: [ '', Validators.required ],
-						Email: [ '', [ Validators.required, Validators.email ] ],
-						CountryCode: [ '', [ Validators.required ] ],
-						PhoneNumber: [ '', [ Validators.required, Validators.pattern('^[0-9]+$') ] ],
-						Area: [ '', Validators.required ],
-						JobTitle: [ '', Validators.required ]
-					});
+		this.form = this.formBuilder.group({
+						full_name: [ '', Validators.required ],
+						id_number: [ '', [ Validators.required, Validators.pattern('^[0-9]*$') ] ],
+						phone_number: [ '', [ Validators.required, Validators.pattern('[- +()0-9]+[0-9]') ] ],
+						email_address: [ '', [ Validators.required, Validators.email ] ],
+						position_name: [ '', Validators.required ],
+		});
 	}
 	get f(): { [key: string]: AbstractControl } {
 		return this.form.controls;
@@ -53,14 +46,17 @@ export class CreateUserComponent implements OnInit {
 	}
 
 	saveData() {
-		this.submitted=true
+		this.submitted = true;
 		if (this.form.invalid) {
 			return;
 		}
-		const body = { ...this.form.value, Topics: [] };
+		const body = { ...this.form.value };
 		this.subcribersService.createTechnician(body).pipe(take(1)).subscribe({
 			next: () => {
-				this.return()
+				/* this.return(); */
+				//toast que informe que se creo el usuario con id tal
+				this.form.reset()
+				this.submitted = false
 			}
 		});
 	}

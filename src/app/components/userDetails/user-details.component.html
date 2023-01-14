@@ -72,19 +72,6 @@
           <div *ngIf="f['position_name'].errors['required']">Position is required</div>
         </div>
       </div>
-  
-<!--       <div class="form-group">
-        <label>Resources</label>
-        <input
-          type="text"
-          formControlName="resources"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['resources'].errors }"
-        />
-        <div *ngIf="submitted && f['resources'].errors" class="invalid-feedback">
-          <div *ngIf="f['resources'].errors['required']">Resources is required</div>
-        </div>
-      </div> -->
       <hr>
     </form>
     <button (click)="saveData()" class="btn btn-primary" [disabled]="form.pristine">Guardar cambios</button>

@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 export class SubscribersService {
 	constructor(private http: HttpClient) {}
 	createTechnician(body: Technician) {
-		const url: string = `${environment.techniciansUrl}/5OATTa/technician`;
+		const url: string = environment.techniciansUrl;
 		const postBody = body;
 		return this.http.post(url, postBody);
 	}

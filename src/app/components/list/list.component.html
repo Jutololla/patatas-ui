@@ -1,6 +1,6 @@
 
 <div *ngIf="technicians!=null" >
-	<button (click)="goToCreateUser()">Crear subscriptor</button>
+	<button (click)="goToCreateUser()" class="btn btn-primary">Crear subscriptor</button>
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -10,7 +10,6 @@
 			<th scope="col">Phone number</th>
 			<th scope="col">Email</th>
 			<th scope="col">Position</th>
-			<th scope="col">Resources</th>
 			<th scope="col">Acciones</th>
 		</tr>
 	</thead>
@@ -22,10 +21,9 @@
 			<td>{{ technician.phone_number}}</td>
 			<td>{{ technician.email_address }}</td>
 			<td>{{ technician.position_name }}</td>
-			<td>{{ technician.resources }}</td>
 			<td>
-				<button (click)="goToUserDetails(technician.id)">Detalles</button>
-				<button (click)="open(content,technician.id)">Borrar</button>
+				<button (click)="goToUserDetails(technician.id)" class="btn btn-secondary">Detalles</button>
+				<button (click)="open(content,technician.id)" class="btn btn-danger">Borrar</button>
 			</td>
 		</tr>
 	</tbody>
