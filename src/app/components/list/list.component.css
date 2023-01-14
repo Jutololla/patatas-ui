@@ -18,8 +18,20 @@
     padding: 0px 16px;
     max-height: 24px;
 }
+.search-bar{
+    display: flex;
+    justify-content: space-between;
+}
+.search{
+    min-width: 145px;
+}
 .btn-secondary{
     margin-right: 3px;
+}
+.btn{
+    height: 30px;
+    align-items: center;
+    display: inline-flex;
 }
 .screen-cover{
         position: fixed;
