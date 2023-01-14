@@ -19,6 +19,12 @@ export class TechniciansService {
 		const params = { _page, _limit};
 		return this.http.get(url, { params,observe: "response" });
 	}
+	getFilteredTechnician(fieldName:string,queryParam:string){
+		const url: string = `${environment.techniciansUrl}/5OATTa/technician`;
+		const key:string=`${fieldName}_like`
+		const params={[key]:queryParam}
+		return this.http.get(url,{params})
+	}
 	getTechnicianInfoById(id: string) {
 		const url: string = `${environment.techniciansUrl}/${id}`;
 		return this.http.get(url);

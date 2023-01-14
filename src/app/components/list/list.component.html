@@ -3,7 +3,23 @@
 	<div class="spinner-grow text-primary"></div>
   </div>
 <div *ngIf="technicians!=null" >
+	<div class="search-bar">
 	<button (click)="goToCreateUser()" class="btn btn-primary">Create technician</button>
+	<div class="search-group">
+    <nz-select
+      nzShowSearch
+      nzServerSearch
+      nzPlaceHolder="input search text"
+      [(ngModel)]="selectedValue"
+      [nzShowArrow]="false"
+      [nzFilterOption]="nzFilterOption"
+      (nzOnSearch)="search($event)"
+	  class="search"
+    >
+      <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"></nz-option>
+    </nz-select>
+	<button class="btn btn-info" (click)="handleSearch()">Go!</button></div>	
+</div>
 <table class="table table-striped">
 	<thead>
 		<tr>

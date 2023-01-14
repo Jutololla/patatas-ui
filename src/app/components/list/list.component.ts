@@ -15,8 +15,7 @@ export class ListComponent implements OnInit {
 		private techniciansService: TechniciansService,
 		private router: Router,
 		private modalService: NgbModal,
-		private notification: NzNotificationService
-	) {}
+		private notification: NzNotificationService	) {}
 
 	_page = 1;
 	_limit = 10;
@@ -24,6 +23,9 @@ export class ListComponent implements OnInit {
 	technicians: any[] = [];
 	closeResult: string = '';
 	isLoading: boolean = true;
+	selectedValue:string=""	
+	listOfOption: Array<{ value: string; text: string }> = [];
+	nzFilterOption = (): boolean => true;
 
 	ngOnInit(): void {
 		this.refreshTable();
@@ -91,4 +93,24 @@ export class ListComponent implements OnInit {
 	goToCreateUser() {
 		this.router.navigateByUrl('create');
 	}
+	handleSearch(){
+		console.log(this.selectedValue);
+		if(this.listOfOption.map((option)=>option.value).includes(this.selectedValue)){
+			this.goToUserDetails(this.selectedValue)
+		} 
+	}
+
+	search(value: string): void {
+		this.techniciansService.getFilteredTechnician("full_name",value).subscribe(data => {
+			const arrayData=data as any[]
+			const listOfOption: Array<{ value: string; text: string }> = [];
+			arrayData.forEach(item => {
+			  listOfOption.push({
+				value: item.id,
+				text: item.full_name
+			  });
+			}); 
+			this.listOfOption = listOfOption;
+		  });
+	  }
 }
